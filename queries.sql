@@ -8,7 +8,6 @@ FROM
 WHERE
     order_status <> 'canceled'
     AND order_status = 'delivered'
-    AND order_delivered_customer_date IS NOT NULL
     AND delay_days >= 3
     AND julianday('2018-10-17') - julianday(order_purchase_timestamp) <= 90
 ORDER BY
@@ -28,43 +27,62 @@ ORDER BY
     total_income DESC;
 
 -- QUERY 3 ----------------------------------------------------------------------------
+WITH seller_orders AS (
+    SELECT
+        order_items.seller_id,
+        MIN(orders.order_purchase_timestamp) AS first_order_date,
+        COUNT(order_items.order_id) AS total_orders
+    FROM
+        order_items
+    JOIN
+        sellers ON order_items.seller_id = sellers.seller_id
+    JOIN
+        orders ON orders.order_id = order_items.order_id
+    GROUP BY
+        order_items.seller_id
+)
+
 SELECT
-    order_items.seller_id,
-    MIN(orders.order_purchase_timestamp) AS first_order_date,
-    COUNT(order_items.order_id) AS total_orders
+    seller_id,
+    first_order_date,
+    total_orders
 FROM
-    order_items
-JOIN
-    sellers ON order_items.seller_id = sellers.seller_id
-JOIN
-    orders ON orders.order_id = order_items.order_id
-GROUP BY
-    order_items.seller_id
-HAVING
+    seller_orders
+WHERE
     julianday('2018-10-17') - julianday(first_order_date) <= 90
     AND total_orders >= 30
 ORDER BY
     total_orders DESC;
 
 -- QUERY 4 ----------------------------------------------------------------------------
+WITH seller_stats AS (
+    SELECT
+        sellers.seller_zip_code_prefix AS post_code,
+        ROUND(AVG(order_reviews.review_score), 2) AS avg_score,
+        COUNT(order_items.order_id) AS total_orders
+    FROM
+        sellers
+    JOIN
+        order_items ON sellers.seller_id = order_items.seller_id
+    JOIN
+        order_reviews ON order_items.order_id = order_reviews.order_id
+    JOIN
+        orders ON orders.order_id = order_items.order_id
+    WHERE
+        julianday('2018-10-17') - julianday(order_purchase_timestamp) < 365
+    GROUP BY
+        sellers.seller_zip_code_prefix
+    HAVING
+        total_orders >= 30
+)
+
 SELECT
-    sellers.seller_zip_code_prefix AS post_code,
-    ROUND(AVG(order_reviews.review_score), 2) AS avg_score,
-    COUNT(order_items.order_id) AS total_orders
+    post_code,
+    avg_score,
+    total_orders
 FROM
-    sellers
-JOIN
-    order_items ON sellers.seller_id = order_items.seller_id
-JOIN
-    order_reviews ON order_items.order_id = order_reviews.order_id
-JOIN
-    orders ON orders.order_id = order_items.order_id
-WHERE
-    julianday('2018-10-17') - julianday(order_purchase_timestamp) < 365
-GROUP BY
-    sellers.seller_zip_code_prefix
-HAVING
-    total_orders >= 30
+    seller_stats
 ORDER BY
     avg_score ASC
 LIMIT 5;
+
