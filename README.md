@@ -1,50 +1,105 @@
-# Customer Segmentation Project using K-Means Clustering
+# Customer Segmentation
 
-### Project Overview
+## Project Overview
 
-This project aims to segment customers based on their demographic, behavioral, and transactional data using K-Means clustering technique. The goal is to identify distinct customer groups with similar characteristics, preferences, and behaviors, enabling targeted marketing, improved customer experience, and increased revenue.
+This project aims to segment customers based on their transactional data using K-Means clustering technique. The goal is to identify distinct customer groups with similar characteristics, preferences, and behaviors, to enable targeted marketing.
 
-### Data Description
+## Data Description
 
-The dataset used for this project consists of [insert number] customer records, each with the following features:
+The dataset used for this project consists of 104 478 records, each with the following features:
 
-* **Demographic features**: age, gender, occupation, income, education level
-* **Behavioral features**: purchase frequency, average order value, product categories
-* **Transactional features**: total spend, last purchase date, purchase channel
+* **order features**:
+  * order_id
+  * order_status
+  * order_purchase_timestamp
+  * order_delivered_customer_date
+  * order_estimated_delivery_date
+  * payment_value
+* **customer features**:
+  * review_score
+  * customer_unique_id
 
-### Methodology
+## Clustering
 
 1. **Data Preprocessing**: The dataset was cleaned, transformed, and scaled to ensure consistency and comparability across features.
-2. **Feature Engineering**: Additional features were created by aggregating and transforming existing features to capture more nuanced customer characteristics.
-3. **K-Means Clustering**: The dataset was clustered using K-Means algorithm with [insert number] clusters. The optimal number of clusters was determined using the Elbow method and Silhouette analysis.
-4. **Cluster Profiling**: Each cluster was profiled based on demographic, behavioral, and transactional characteristics to identify distinct customer segments.
+2. **K-Means Clustering**: The dataset was clustered using K-Means algorithm with [insert number] clusters. The optimal number of clusters was determined using the Elbow method and Silhouette analysis.
+3. **Cluster Interpretation**: A typical customer profile for each cluster was determined based on the features separating the clusters the most.
 
-### Results
+### Data Preprocessing
 
-The K-Means clustering algorithm identified [insert number] distinct customer segments, each with unique characteristics:
+CSV files including orders, customers, payments and review data are joined to create a dataset of 104 478 records with 8 features. The preprocessing steps include:
+1. **Imputing** mean values
+2. **Converting** date and times
+3. **Log transforming** number of orders and total payments
+4. **Standardizing** all numerical data
 
-#### Segment 1: Young Professionals
+![](img/preprocessed_data.png)
 
-* High-income, urban, tech-savvy individuals who frequently purchase online.
+### K-Means Clustering
 
-#### Segment 2: Family-Oriented
+#### Number Of Clusters
 
-* Middle-aged, suburban, family-oriented customers who prioritize value and convenience.
+The elbow plot is a technique for determining the optimal number of clusters (k) in the k-means algorithm. It involves running the k-means algorithm for different values of k and plotting the sum of squared errors (SSE) or inertia against the number of clusters. The SSE measures the compactness of the clustering, calculated as the sum of squared distances between each data point and its assigned cluster centroid.
 
-#### Segment 3: Budget-Conscious
+As the number of clusters increases, the SSE decreases since data points are more tightly grouped within clusters. However, at some point, adding more clusters does not significantly reduce the SSE, and the plot forms an "elbow" shape. The optimal number of clusters is typically chosen at or near this elbow point, where increasing k further would not substantially improve the clustering quality while potentially leading to overfitting. The elbow plot provides a visual aid to balance the trade-off between minimizing SSE and avoiding an excessive number of clusters.
 
-* Price-sensitive customers who prioritize discounts and promotions.
+![](img/elbow_plot.png)
 
-#### Segment 4: Loyalists
+The elbow appears to be a **k = 5**. Therefore it is the number of clusters chosen for the following study. 
 
-* Long-term customers who exhibit high loyalty and retention rates.
+#### Silhouette Plot
 
-### Insights and Recommendations
+The silhouette plot is a visualization tool that graphically displays how well each data point fits into its assigned cluster compared to other clusters. It consists of one or more silhouette bars, with each bar representing a cluster.The average silhouette coefficient across all data provides an overall clustering quality assessment. Silhouette plots are valuable for visually interpreting and validating clustering results and identifying misclustered points.
 
-* **Targeted Marketing**: Develop targeted marketing campaigns tailored to each segment's preferences and behaviors.
-* **Personalization**: Offer personalized product recommendations and promotions based on individual customer characteristics.
-* **Customer Retention**: Implement loyalty programs and retention strategies to maintain high-value customers.
-* **Product Development**: Develop products and services that cater to the needs and preferences of each segment.
+![](img/silhouette_plots.png)
+
+## Cluster Interpretation
+
+A pair plot is a useful visualization tool for interpreting and validating clustering results across all feature pairs. By color-coding data points based on their assigned cluster labels, the pair plot displays scatter plots for every feature combination. Well-separated, distinct clusters across multiple scatter plots indicate successful clustering, while overlapping or poorly separated clusters may suggest issues with the clustering model or data.
+
+The pair plot helps identify features contributing most to cluster separation, detect potential outliers or misclustered points, and gain insights into cluster characteristics across different feature combinations. This comprehensive view facilitates interpreting the clusters based on the features offering the maximum separation.
+
+![](img/pairplot.png)
+
+| Cluster | Description |
+| --- | --- |
+| **0 - Former satisfied customers** | - Customers whose last order is not recent<br>- Positive mean review score<br>- No delayed order |
+| **1 - Dissatisfied with delays** | - Negative review scores<br>- Short delays |
+| **2 - Frequent buyers** | - Customers with multiple orders |
+| **3 - High-risk customers** | - Customers with lost orders and/or long delays<br>- Negative mean review score |
+| **4 - New satisfied customers** | - Recent customers<br>- Positive mean review score<br>- No delayed order |
+
+## Insights and Recommendations
+
+* **Former Satisfied Customers**
+
+  Implement a win-back campaign to re-engage these customers and encourage them to make new purchases
+  Offer personalized promotions or discounts based on their previous order history and preferences
+  Analyze the reasons behind their inactivity (e.g., product dissatisfaction, competitor offerings) and address any issues
+
+* **Dissatisfied with Delays**
+
+  Improve order fulfillment and logistics processes to minimize delays
+  Offer compensation or incentives for customers affected by delays
+  Enhance communication and provide real-time order tracking to manage expectations
+
+* **Frequent Buyers**
+
+  Develop a loyalty program to reward and retain these valuable customers.
+  Offer exclusive deals, early access to new products, or personalized recommendations based on their purchase history.
+  Analyze their buying patterns and preferences to optimize product offerings and marketing strategies.
+
+* **High-Risk Customers**
+
+  Implement stricter fraud detection and order verification processes for this high-risk segment.
+  Improve customer service and order tracking to minimize lost orders and delays.
+  Consider offering alternative payment or delivery options to mitigate risks.
+
+* **New Satisfied**
+
+  Focus on providing an exceptional onboarding experience for these new customers.
+  Encourage them to leave reviews and share their positive experiences to attract more new customers.
+  Cross-sell and upsell complementary products based on their initial purchases.
 
 ### Data Drift Analysis
 
