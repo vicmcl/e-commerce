@@ -63,11 +63,11 @@ The pair plot helps identify features contributing most to cluster separation, d
 
 | Cluster | Description |
 | --- | --- |
-| **0 - Former satisfied customers** | - Customers whose last order is not recent<br>- Positive mean review score<br>- No delayed order |
-| **1 - Dissatisfied with delays** | - Negative review scores<br>- Short delays |
-| **2 - Frequent buyers** | - Customers with multiple orders |
-| **3 - High-risk customers** | - Customers with lost orders and/or long delays<br>- Negative mean review score |
-| **4 - New satisfied customers** | - Recent customers<br>- Positive mean review score<br>- No delayed order |
+| **0 - Former Satisfied Customers** | - Customers whose last order is not recent<br>- Positive mean review score<br>- No delayed order |
+| **1 - Dissatisfied with Delays** | - Negative review scores<br>- Short delays |
+| **2 - Frequent Buyers** | - Customers with multiple orders |
+| **3 - High-Risk Customers** | - Customers with lost orders and/or long delays<br>- Negative mean review score |
+| **4 - New Satisfied Customers** | - Recent customers<br>- Positive mean review score<br>- No delayed order |
 
 ## Insights and Recommendations
 
@@ -95,33 +95,26 @@ The pair plot helps identify features contributing most to cluster separation, d
   Improve customer service and order tracking to minimize lost orders and delays.
   Consider offering alternative payment or delivery options to mitigate risks.
 
-* **New Satisfied**
+* **New Satisfied Customers**
 
   Focus on providing an exceptional onboarding experience for these new customers.
   Encourage them to leave reviews and share their positive experiences to attract more new customers.
   Cross-sell and upsell complementary products based on their initial purchases.
 
-### Data Drift Analysis
+## Data Drift Analysis
 
+### Methodology
+
+To simulate data drift and determine the optimal train set size and retraining frequency for the model, the data is split into a train set (before a date *D*) and a test set (after *D*). The model is trained on the train set and evaluated on the test set using the **Adjusted Rand Index (ARI)**.
+
+This process is repeated by varying the size of the train set (e.g., 2 months, 4 months) and the window of test data (e.g., 1 month after *D*, 3 months after *D*). By analyzing the performance metrics across different train set sizes and test data windows, businesses can identify the optimal combination that maximizes model accuracy and stability over time, accounting for data drift and evolving customer behavior.
+
+
+### Adjusted Rand Index
+
+The Adjusted Rand Index compares the results obtained from the model with the expected customer clusters. It adjusts for the chance of random cluster assignments, providing a score between 0 and 1, where 1 indicates a perfect match between the predicted and true clusters. A higher ARI value signifies better agreement and less data drift between the model's segmentation and the actual customer segments, making it a useful tool for assessing the performance and stability of customer segmentation models over time.
 To assess the stability of the customer segments and the need for model retraining, a data drift analysis was conducted. The analysis revealed:
 
-* **Drift Detection**: A significant drift was detected in the data, indicating that the customer segments are not stable over time.
-* **Drift Quantification**: The drift was quantified using metrics such as [insert metrics, e.g., KL-divergence, JS-divergence].
-* **Retraining Frequency**: Based on the drift analysis, it is recommended to retrain the model every [insert frequency, e.g., 3 months] to ensure that the customer segments remain accurate and up-to-date.
+![](img/ari.png)
 
-### Technical Requirements
-
-* **Python 3.x**
-* **Scikit-learn library** for K-Means clustering
-* **Pandas and NumPy** for data manipulation and analysis
-* **Matplotlib and Seaborn** for data visualization
-
-### Future Work
-
-* **Segmentation Refining**: Refine the segmentation model by incorporating additional data sources (e.g., social media, customer feedback).
-* **Segment Evolution**: Analyze the evolution of customer segments over time to identify trends and opportunities.
-* **Segment-Specific Strategies**: Develop and implement segment-specific marketing, sales, and customer service strategies.
-
-### Contact
-
-For questions, feedback, or collaboration opportunities, please contact [Your Name] at [Your Email].
+According to the heatmap visualizing the Adjusted Rand Index (ARI) values, the best training period to obtain the most accurate and stable customer clusters over time is **4 months**.  The heatmap also shows that retraining the customer segmentation model every **3 or 5 months** yields the highest ARI scores, indicating the best results in terms of cluster stability and accuracy compared to the true customer segments.
