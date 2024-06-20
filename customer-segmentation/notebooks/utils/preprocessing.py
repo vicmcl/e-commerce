@@ -59,7 +59,10 @@ def customer_preprocessing(data, imputer, scaler, set_type = "train"):
 
     # Impute mean value to review score
     agg_data = impute_data(
-        data = agg_data, columns = ["mean_review_score"], imputer = imputer
+        data = agg_data,
+        columns = ["mean_review_score"],
+        imputer = imputer,
+        set_type = set_type,
     )
 
     # Convert datetime to seconds
