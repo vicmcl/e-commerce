@@ -25,7 +25,7 @@ CSV files including orders, customers, payments and review data are joined to cr
 ### Data Preprocessing
 
  The preprocessing steps include:
-1. **Imputing** mean values
+1. **Imputing** missing review scores with mean value
 2. **Converting** dates and times into integers
 3. **Log transforming** number of orders and total payments
 4. **Standardizing** all numerical data
