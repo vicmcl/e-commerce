@@ -4,9 +4,12 @@
 
 This project aims to segment customers based on their transactional data using K-Means clustering technique. The goal is to identify distinct customer groups with similar characteristics, preferences, and behaviors, to enable targeted marketing.
 
-## Data Description
 
-The dataset used for this project consists of 104 478 records, each with the following features:
+## Clustering
+
+### Data Description
+
+CSV files including orders, customers, payments and review data are joined to create a dataset of 104 478 records with 8 features.
 
 * **order features**:
   * order_id
@@ -19,17 +22,11 @@ The dataset used for this project consists of 104 478 records, each with the fol
   * review_score
   * customer_unique_id
 
-## Clustering
-
-1. **Data Preprocessing**: The dataset was cleaned, transformed, and scaled to ensure consistency and comparability across features.
-2. **K-Means Clustering**: The dataset was clustered using K-Means algorithm with [insert number] clusters. The optimal number of clusters was determined using the Elbow method and Silhouette analysis.
-3. **Cluster Interpretation**: A typical customer profile for each cluster was determined based on the features separating the clusters the most.
-
 ### Data Preprocessing
 
-CSV files including orders, customers, payments and review data are joined to create a dataset of 104 478 records with 8 features. The preprocessing steps include:
+ The preprocessing steps include:
 1. **Imputing** mean values
-2. **Converting** date and times
+2. **Converting** dates and times into integers
 3. **Log transforming** number of orders and total payments
 4. **Standardizing** all numerical data
 
@@ -73,41 +70,41 @@ The pair plot helps identify features contributing most to cluster separation, d
 
 * **Former Satisfied Customers**
 
-  Implement a win-back campaign to re-engage these customers and encourage them to make new purchases
-  Offer personalized promotions or discounts based on their previous order history and preferences
-  Analyze the reasons behind their inactivity (e.g., product dissatisfaction, competitor offerings) and address any issues
+  * Implement a win-back campaign to re-engage these customers and encourage them to make new purchases.
+  * Offer personalized promotions or discounts based on their previous order history and preferences.
+  * Analyze the reasons behind their inactivity (e.g., product dissatisfaction, competitor offerings) and address any issues.
 
 * **Dissatisfied with Delays**
 
-  Improve order fulfillment and logistics processes to minimize delays
-  Offer compensation or incentives for customers affected by delays
-  Enhance communication and provide real-time order tracking to manage expectations
+  * Improve order fulfillment and logistics processes to minimize delays.
+  * Offer compensation or incentives for customers affected by delays.
+  * Enhance communication and provide real-time order tracking to manage expectations.
 
 * **Frequent Buyers**
 
-  Develop a loyalty program to reward and retain these valuable customers.
-  Offer exclusive deals, early access to new products, or personalized recommendations based on their purchase history.
-  Analyze their buying patterns and preferences to optimize product offerings and marketing strategies.
+  * Develop a loyalty program to reward and retain these valuable customers.
+  * Offer exclusive deals, early access to new products, or personalized recommendations based on their purchase history.
+  * Analyze their buying patterns and preferences to optimize product offerings and marketing strategies.
 
 * **High-Risk Customers**
 
-  Implement stricter fraud detection and order verification processes for this high-risk segment.
-  Improve customer service and order tracking to minimize lost orders and delays.
-  Consider offering alternative payment or delivery options to mitigate risks.
+  * Implement stricter fraud detection and order verification processes for this high-risk segment.
+  * Improve customer service and order tracking to minimize lost orders and delays.
+  * Consider offering alternative payment or delivery options to mitigate risks.
 
 * **New Satisfied Customers**
 
-  Focus on providing an exceptional onboarding experience for these new customers.
-  Encourage them to leave reviews and share their positive experiences to attract more new customers.
-  Cross-sell and upsell complementary products based on their initial purchases.
+  * Focus on providing an exceptional onboarding experience for these new customers.
+  * Encourage them to leave reviews and share their positive experiences to attract more new customers.
+  * Cross-sell and upsell complementary products based on their initial purchases.
 
 ## Data Drift Analysis
 
 ### Methodology
 
-To simulate data drift and determine the optimal train set size and retraining frequency for the model, the data is split into a train set (before a date *D*) and a test set (after *D*). The model is trained on the train set and evaluated on the test set using the **Adjusted Rand Index (ARI)**.
+To simulate data drift and determine the optimal set size and retraining frequency for the model, the data is split into a train set (before a date *D*) and a test set (after *D*). The model is trained on the train set and evaluated on the test set using the **Adjusted Rand Index (ARI)**.
 
-This process is repeated by varying the size of the train set (e.g., 2 months, 4 months) and the window of test data (e.g., 1 month after *D*, 3 months after *D*). By analyzing the performance metrics across different train set sizes and test data windows, businesses can identify the optimal combination that maximizes model accuracy and stability over time, accounting for data drift and evolving customer behavior.
+This process is repeated by varying the size of the train set (e.g., 2 months, 4 months) and the window of test data (e.g., 1 month after *D*, 3 months after *D*). By analyzing the ARI across different train set sizes and test data windows, businesses can identify the optimal combination that maximizes model accuracy and stability over time
 
 
 ### Adjusted Rand Index
