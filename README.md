@@ -2,8 +2,16 @@
 
 ## Project Overview
 
-This project aims to segment customers based on their transactional data using K-Means clustering technique. The goal is to identify distinct customer groups with similar characteristics, preferences, and behaviors, to enable targeted marketing.
+This project aims to segment customers based on their transactional data using K-Means clustering technique. The goal is to identify distinct customer groups with similar characteristics, preferences, and behaviors, to enable targeted marketing, improve customer satisfaction, and drive business growth.
 
+## Business Impact
+
+By understanding our customer segments, we can:
+
+* Increase revenue through targeted marketing and personalized experiences
+* Improve customer satisfaction and loyalty through tailored offerings and services
+* Enhance operational efficiency by optimizing resource allocation and supply chain management
+* Gain a competitive edge by identifying and capitalizing on emerging trends and opportunities
 
 ## Clustering
 
@@ -115,3 +123,13 @@ To assess the stability of the customer segments and the need for model retraini
 ![](img/ari.png)
 
 According to the heatmap visualizing the Adjusted Rand Index (ARI) values, the best training period to obtain the most accurate and stable customer clusters over time is **4 months**.  The heatmap also shows that retraining the customer segmentation model every **3 or 5 months** yields the highest ARI scores, indicating the best results in terms of cluster stability and accuracy compared to the true customer segments.
+
+### Business Impact of Data Drift Analysis
+
+
+By regularly retraining the customer segmentation model and adapting to changes in customer behavior, businesses can:
+
+* Maintain accurate customer segmentation and targeted marketing efforts
+* Identify emerging trends and opportunities to stay ahead of the competition
+* Optimize resource allocation and supply chain management to meet changing customer needs
+* Improve customer satisfaction and loyalty through timely and relevant offerings and services
