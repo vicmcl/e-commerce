@@ -13,6 +13,18 @@ By understanding our customer segments, we can:
 * Enhance operational efficiency by optimizing resource allocation and supply chain management
 * Gain a competitive edge by identifying and capitalizing on emerging trends and opportunities
 
+## Database Exploration
+
+The database is structured as follows:
+
+![](img/database_structure.png)
+
+A series of SQL queries are made to explore the database and get an overview of the sellers performance and client reviews:
+1.  Orders with at least 3 days of delay in delivery within the last 90 days, excluding canceled orders
+2.  Sellers with total income higher than 100,000 reais
+3.  New sellers (<3 months on the platform) with at least 30 orders
+4.  Bottom 5 post codes with the lowest average review score, with at least 30 orders in the last year
+
 ## Clustering
 
 ### Data Description
