@@ -1,0 +1,12 @@
+-- QUERY 2: sellers with total income higher than 100,000
+SELECT
+    seller_id,
+    ROUND(SUM(price), 2) AS total_income
+FROM
+    order_items
+GROUP BY
+    seller_id
+HAVING
+    total_income > 100000
+ORDER BY
+    total_income DESC;

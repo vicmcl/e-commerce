@@ -1,0 +1,28 @@
+-- QUERY 3: new sellers (<3 months on the platform) with at least 30 orders
+
+WITH seller_orders AS (
+    SELECT
+        order_items.seller_id,
+        MIN(orders.order_purchase_timestamp) AS first_order_date,
+        COUNT(order_items.order_id) AS total_orders
+    FROM
+        order_items
+    JOIN
+        sellers ON order_items.seller_id = sellers.seller_id
+    JOIN
+        orders ON orders.order_id = order_items.order_id
+    GROUP BY
+        order_items.seller_id
+)
+
+SELECT
+    seller_id,
+    first_order_date,
+    total_orders
+FROM
+    seller_orders
+WHERE
+    julianday('2018-10-17') - julianday(first_order_date) <= 90
+    AND total_orders >= 30
+ORDER BY
+    total_orders DESC;

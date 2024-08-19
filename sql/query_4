@@ -1,0 +1,31 @@
+-- QUERY 4: bottom 5 post codes with at least 30 orders in the last year, with the lowest average review score
+WITH seller_stats AS (
+    SELECT
+        sellers.seller_zip_code_prefix AS post_code,
+        ROUND(AVG(order_reviews.review_score), 2) AS avg_score,
+        COUNT(order_items.order_id) AS total_orders
+    FROM
+        sellers
+    JOIN
+        order_items ON sellers.seller_id = order_items.seller_id
+    JOIN
+        order_reviews ON order_items.order_id = order_reviews.order_id
+    JOIN
+        orders ON orders.order_id = order_items.order_id
+    WHERE
+        julianday('2018-10-17') - julianday(order_purchase_timestamp) < 365
+    GROUP BY
+        sellers.seller_zip_code_prefix
+    HAVING
+        total_orders >= 30
+)
+
+SELECT
+    post_code,
+    avg_score,
+    total_orders
+FROM
+    seller_stats
+ORDER BY
+    avg_score ASC
+LIMIT 5;
